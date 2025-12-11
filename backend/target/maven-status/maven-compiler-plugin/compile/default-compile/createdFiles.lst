@@ -1,0 +1,12 @@
+com\postgresandchill\PostgresAndChillApplication.class
+com\postgresandchill\model\Genre.class
+com\postgresandchill\service\MovieService.class
+com\postgresandchill\repository\MovieRepository.class
+com\postgresandchill\controller\GenreController.class
+com\postgresandchill\model\Rating$RatingId.class
+com\postgresandchill\repository\RatingRepository.class
+com\postgresandchill\controller\MovieController.class
+com\postgresandchill\model\Movie.class
+com\postgresandchill\model\Rating.class
+com\postgresandchill\dto\MovieDTO.class
+com\postgresandchill\repository\GenreRepository.class

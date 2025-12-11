@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>System Offline - Postgres and Chill</title>
+<link rel="icon" href="logo.png" />
+
+<style>
+  :root{
+    --bg:#0e0e0e;
+    --panel:#141414;
+    --card:#1a1a1a;
+    --text:#f5f5f5;
+    --muted:#b9b9b9;
+    --brand:#DFA601;
+    --brand2:#f0c52b;
+  }
+
+  body{
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    text-align:center;
+  }
+
+  /* Center box */
+  .container{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+
+  .error-box{
+    background:var(--panel);
+    padding:40px 32px;
+    border-radius:14px;
+    max-width:500px;
+    width:100%;
+    box-shadow:0 4px 16px rgba(0,0,0,0.45);
+  }
+
+  .error-box img{
+    height:80px;
+    margin-bottom:16px;
+  }
+
+  h1{
+    color:var(--brand);
+    margin-top:0;
+    margin-bottom:10px;
+    font-size:2rem;
+  }
+
+  p{
+    color:var(--muted);
+    font-size:1rem;
+    line-height:1.5;
+    margin-bottom:22px;
+  }
+
+  /* Buttons */
+  .btn{
+    padding:12px 20px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    margin:8px 0;
+    width:100%;
+    font-size:1rem;
+  }
+
+  .btn-start{
+    background:var(--brand);
+    color:#141414;
+  }
+  .btn-start:hover{
+    background:var(--brand2);
+  }
+
+  .btn-about{
+    background:transparent;
+    border:1px solid var(--brand);
+    color:var(--brand);
+  }
+  .btn-about:hover{
+    background:var(--brand);
+    color:#141414;
+  }
+
+  /* Footer */
+  footer{
+    background:#111;
+    padding:12px 15px;
+    text-align:center;
+    border-top:1px solid #222;
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-top:auto;
+  }
+
+  footer strong{
+    color:var(--brand);
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="error-box">
+    <img src="logo.png" alt="Logo" />
+    <h1>System Offline</h1>
+    <p>
+      The Postgres and Chill backend is not running.<br>
+      Please start the application to continue.
+    </p>
+
+    <!-- Runs start.bat located in SAME folder (dynamic path) -->
+    <button class="btn btn-start" onclick="showInstructions()">Start Application</button>
+
+    <button class="btn btn-about" onclick="location.href='about.html'">About Page</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <p><strong>Postgres & Chill</strong>: Smarter Movie Recommendations</p>
+    <p>CS 51550-001 Database Systems @ PNW — Fall 2025 | Panagiotis Papadopoulos </p>
+  </div>
+</footer>
+
+
+<script>
+function showInstructions(){
+  alert(
+    "To start Postgres and Chill:\n\n" +
+    "1. Double-click start.bat in your project folder:\n" +
+    "   ..\\postgres-and-chill\\start.bat\n" +
+    "2. Wait until Docker finishes starting.\n" +
+    "3. You can leave this page a new page will automatically open"
+  );
+}
+</script>
+
+
+</body>
+</html>

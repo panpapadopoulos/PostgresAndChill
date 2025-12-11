@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About - Postgres and Chill</title>
+<link rel="icon" href="logo.png" />
+
+<style>
+/* ========================================= */
+/* =============== GLOBAL ================== */
+/* ========================================= */
+:root{
+  --bg:#0e0e0e;
+  --panel:#141414;
+  --panel2:#1f1f1f;
+  --card:#1a1a1a;
+  --cardHover:#202020;
+  --text:#f5f5f5;
+  --muted:#b9b9b9;
+  --brand:#DFA601;
+  --brand2:#f0c52b;
+  --shadow:0 4px 16px rgba(0,0,0,0.45);
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ========================================= */
+/* =============== HEADER ================== */
+/* ========================================= */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 28px;
+  background:var(--panel);
+  box-shadow:var(--shadow);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+header img.logo{
+  height:44px;
+}
+header h1{
+  color:var(--brand);
+  font-size:1.9rem;
+  font-weight:700;
+  margin:0;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.nav-link{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:1rem;
+  font-weight:500;
+  transition:.2s;
+}
+.nav-link:hover,
+.nav-link.active{
+  color:var(--brand);
+}
+
+.auth-btn{
+  background:transparent;
+  border:1px solid var(--brand);
+  color:var(--brand);
+  padding:7px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.25s;
+  font-weight:500;
+}
+.auth-btn:hover{
+  background:var(--brand);
+  color:#141414;
+}
+
+.header-right img{
+  height:38px;
+}
+
+/* ========================================= */
+/* =============== MAIN ==================== */
+/* ========================================= */
+main{
+  max-width:1000px;
+  margin:50px auto;
+  background:var(--panel);
+  padding:40px 34px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+}
+
+/* Section titles */
+h2{
+  font-size:1.4rem;
+  font-weight:700;
+  margin-top:32px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+h2::before{
+  content:"";
+  width:7px;
+  height:24px;
+  border-radius:4px;
+  background:var(--brand);
+}
+h3{
+  color:var(--brand);
+  margin-top:28px;
+}
+
+/* Text */
+p, ul{
+  font-size:1rem;
+  line-height:1.6;
+  color:#ddd;
+}
+ul{ padding-left:22px; }
+
+/* Project Title Centerpiece */
+.project-name{
+  text-align:center;
+  font-size:1.6rem;
+  padding-bottom:10px;
+  color:var(--brand);
+  font-weight:700;
+}
+
+/* Developer Card (matching dashboard cards) */
+.developer-info{
+  display:flex;
+  gap:24px;
+  background:var(--card);
+  padding:24px;
+  border-radius:14px;
+  margin-top:25px;
+  box-shadow:var(--shadow);
+  flex-wrap:wrap;
+}
+.developer-info img{
+  height:130px;
+  width:130px;
+  object-fit:cover;
+  border-radius:50%;
+  border:2px solid var(--brand);
+}
+.developer-details{
+  flex:1;
+}
+.developer-details h2{
+  margin-top:0;
+}
+
+/* ========================================= */
+/* =============== FOOTER ================== */
+/* ========================================= */
+footer{
+  background:#111;
+  padding:14px;
+  text-align:center;
+  border-top:1px solid #222;
+  color:var(--muted);
+  font-size:0.85rem;
+}
+.footer-content strong{
+  color:var(--brand);
+}
+footer a{
+  color:var(--brand);
+  text-decoration:none;
+}
+footer a:hover{
+  text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <img src="logo.png" class="logo" alt="Logo">
+    <h1>Postgres and Chill</h1>
+  </div>
+
+  <div class="header-right">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <button class="auth-btn" onclick="location.href='login.html'">Login</button>
+    <button class="auth-btn" onclick="location.href='register.html'">Register</button>
+    <img src="pnw.png" alt="PNW Logo">
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+  <div class="project-name">Postgres & Chill: Smarter Movie Recommendations</div>
+
+  <div class="developer-info">
+    <img src="profile.png" alt="Developer Photo">
+    <div class="developer-details">
+      <h2>Panagiotis Papadopoulos</h2>
+      <p>Graduate Student | M.S. Computer Science</p>
+      <p>Purdue University Northwest</p>
+      <p><strong>Student ID:</strong> 039644940</p>
+      <p><strong>Email:</strong> papadop@pnw.edu</p>
+    </div>
+  </div>
+
+  <h2>Problem Statement</h2>
+  <p>
+    Choosing a movie shouldn't be the hardest part of relaxing — yet streaming services only
+    show what they personally own. <strong>Postgres & Chill</strong> breaks that limitation
+    by aggregating movie data from a large dataset and intelligently recommending films
+    based on unbiased ranking algorithms.
+  </p>
+
+  <h2>Proposed Solution</h2>
+  <p>
+    The platform imports, cleans, and stores movie and rating data inside PostgreSQL,
+    provides a REST API through Spring Boot, and calculates recommendations using
+    weighted rating formulas and user preferences. New users go through a
+    <strong>cold start</strong> rating process to personalize results quickly.
+  </p>
+
+  <h2>Implementation Overview</h2>
+  <p>
+    The system uses a full-stack approach:
+  </p>
+  <ul>
+    <li>Java Spring Boot backend with REST endpoints</li>
+    <li>PostgreSQL database for all movie, rating, and user data</li>
+    <li>HTML/CSS/JavaScript frontend with dynamic rendering</li>
+    <li>Docker for easy deployment and consistent environment setup</li>
+  </ul>
+
+  <h2>Technology Stack</h2>
+  <ul>
+    <li><strong>Backend:</strong> Java (Spring Boot), PostgreSQL</li>
+    <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+    <li><strong>DevOps:</strong> Docker, Docker Compose</li>
+  </ul>
+
+  <h2>Expected Outcomes</h2>
+  <ul>
+    <li>Full PostgreSQL movie dataset with relationships and indexing</li>
+    <li>API for movies, genres, ratings, and recommendation logic</li>
+    <li>Interactive dashboard with carousels and rating UI</li>
+    <li>Cold-start onboarding for new users</li>
+    <li>Future-ready architecture for neural recommendation models</li>
+  </ul>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <p><strong>Postgres & Chill</strong>: Smarter Movie Recommendations</p>
+    <p>CS 51550-001 Database Systems @ PNW — Fall 2025 | Panagiotis Papadopoulos</p>
+  </div>
+  
+</footer>
+
+</body>
+</html>

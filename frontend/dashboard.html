@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard - Postgres and Chill</title>
+<link rel="icon" href="logo.png" />
+
+<style>
+  /* ========================================= */
+  /* =============== GLOBAL ================== */
+  /* ========================================= */
+  :root{
+    --bg:#0e0e0e;
+    --panel:#141414;
+    --card:#1a1a1a;
+    --cardHover:#202020;
+    --text:#f5f5f5;
+    --muted:#b9b9b9;
+    --brand:#DFA601;
+    --brand2:#f0c52b;
+    --shadow:0 4px 16px rgba(0,0,0,0.35);
+  }
+
+  body{
+    font-family:'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    overflow-x:hidden;
+  }
+
+  /* ========================================================= */
+  /* ===================== HEADER ============================ */
+  /* ========================================================= */
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 28px;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:0;
+    z-index:100;
+  }
+
+  .header-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  header img.logo{
+    height:44px;
+  }
+
+  header h1{
+    color:var(--brand);
+    font-size:1.9rem;
+    font-weight:700;
+    letter-spacing:0.5px;
+    margin:0;
+  }
+
+  .header-center{
+    color:var(--brand);
+    font-size:1rem;
+    text-align:center;
+    white-space:nowrap;
+  }
+
+  .header-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+
+  .nav-link{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:1rem;
+    transition:0.2s;
+  }
+
+  .nav-link:hover{
+    color:var(--brand);
+  }
+
+  .logout-btn{
+    background:#00000040;
+    border:1px solid var(--brand);
+    color:var(--brand);
+    padding:7px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.25s;
+    font-weight:500;
+  }
+  .logout-btn:hover{
+    background:var(--brand);
+    color:#141414;
+  }
+
+  .header-right img{
+    height:38px;
+    margin-left:10px;
+  }
+
+  /* ========================================================= */
+  /* ===================== SECTION TITLES ==================== */
+  /* ========================================================= */
+  section{
+    padding:32px 28px;
+  }
+
+  h2{
+    font-size:1.7rem;
+    font-weight:700;
+    color:var(--text);
+    margin:0 0 8px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  h2::before{
+    content:"";
+    width:8px;
+    height:28px;
+    border-radius:4px;
+    background:var(--brand);
+  }
+
+  .section-sub{
+    margin:0 0 14px;
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+
+  /* ========================================================= */
+  /* ===================== FILTER BAR ======================== */
+  /* ========================================================= */
+  .filters{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+
+  select,
+  input[type="text"],
+  input[type="number"]{
+    padding:8px 10px;
+    border-radius:8px;
+    background:#1f1f1f;
+    border:1px solid #333;
+    color:var(--text);
+    font-size:0.95rem;
+    transition:0.2s;
+  }
+  select:focus,
+  input:focus{
+    border-color:var(--brand);
+    outline:none;
+  }
+
+  .pill{
+    border-radius:999px;
+  }
+
+  /* ========================================================= */
+  /* ===================== CAROUSEL ========================== */
+  /* ========================================================= */
+  .carousel-container{
+    position:relative;
+  }
+
+  .carousel{
+    display:flex;
+    overflow-x:auto;
+    scroll-behavior:smooth;
+    padding-bottom:12px;
+  }
+  .carousel::-webkit-scrollbar{
+    display:none;
+  }
+
+  .carousel-page{
+    display:flex;
+    gap:18px;
+    flex-shrink:0;
+    padding:0 6px;
+  }
+
+  /* Floating Carousel Buttons (match index) */
+  .carousel-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:42px;
+    height:42px;
+
+    background:rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.08);
+    color:var(--text);
+
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    backdrop-filter:blur(6px);
+    cursor:pointer;
+
+    font-size:1.3rem;
+    transition:0.25s ease;
+    box-shadow:0 4px 12px rgba(0,0,0,0.55);
+
+    opacity:0.55;
+    z-index:10;
+  }
+
+  .carousel-btn:hover{
+    opacity:1;
+    background:var(--brand);
+    color:#141414;
+    transform:translateY(-50%) scale(1.08);
+    box-shadow:0 6px 18px rgba(0,0,0,0.8);
+  }
+
+  .carousel-left{ left:-18px; }
+  .carousel-right{ right:-18px; }
+
+  /* ========================================================= */
+  /* ===================== MOVIE CARDS ======================= */
+  /* ========================================================= */
+  .movie-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:12px;
+    width:160px;
+    height:295px;
+    flex:0 0 160px;
+    text-align:center;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    box-shadow:var(--shadow);
+    transition:0.25s ease;
+    border:1px solid #222;
+    overflow:hidden;
+  }
+
+  .movie-card:hover{
+    transform:scale(1.06);
+    background:var(--cardHover);
+    box-shadow:0 6px 20px rgba(0,0,0,0.45);
+  }
+
+  .movie-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:4px;
+  }
+
+  .movie-card h3{
+    font-size:0.95rem;
+    margin:2px 0 0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .movie-card p{
+    margin:2px 0;
+    color:var(--muted);
+    font-size:0.8rem;
+  }
+
+  /* Inline user rating stars on card */
+  .inline-stars{
+    margin-top:4px;
+    font-size:1rem;
+    display:flex;
+    justify-content:center;
+    gap:2px;
+  }
+  .inline-stars span{
+    cursor:pointer;
+    color:#444;
+    transition:transform 0.1s,color 0.1s;
+  }
+  .inline-stars span.active{
+    color:var(--brand);
+  }
+  .inline-stars span:hover{
+    transform:scale(1.15);
+  }
+
+  /* ========================================================= */
+  /* ===================== POPUP ============================= */
+  /* ========================================================= */
+  #popup{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.65);
+    backdrop-filter:blur(4px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+  }
+
+  .popup-content{
+    background:#171717;
+    padding:26px;
+    border-radius:14px;
+    width:380px;
+    animation:fadeIn 0.25s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,0.6);
+    border:1px solid #222;
+    text-align:left;
+    color:#ddd;
+  }
+
+  .popup-content h2{
+    margin-top:0;
+    color:var(--brand);
+    font-size:1.4rem;
+    word-wrap:break-word;
+  }
+
+  .popup-row{
+    margin:6px 0;
+  }
+
+  .popup-row strong{
+    color:var(--brand);
+  }
+
+  .stars span{
+    font-size:1.7rem;
+    cursor:pointer;
+    color:#777;
+    transition:transform .1s,color .1s;
+  }
+  .stars span.active{
+    color:var(--brand);
+  }
+  .stars span:hover{
+    transform:scale(1.15);
+  }
+
+  .popup-actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+  }
+  .close-btn{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:var(--brand);
+    color:#141414;
+    cursor:pointer;
+    font-weight:500;
+  }
+  .close-btn:hover{
+    background:var(--brand2);
+  }
+  .clear-btn{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid var(--brand);
+    background:transparent;
+    color:var(--brand);
+    cursor:pointer;
+    font-weight:500;
+  }
+  .clear-btn:hover{
+    background:#2a2a2a;
+  }
+
+  @keyframes fadeIn{
+    from{ opacity:0; transform:scale(0.95); }
+    to{ opacity:1; transform:scale(1); }
+  }
+
+  /* ========================================================= */
+  /* ===================== TOAST ============================= */
+  /* ========================================================= */
+  #toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#222;
+    border:1px solid #333;
+    color:#fff;
+    padding:10px 14px;
+    border-radius:8px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s,transform .2s;
+    z-index:1000;
+  }
+  #toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(-6px);
+  }
+/* ========================================= */
+/* =============== FOOTER ================== */
+/* ========================================= */
+footer{
+  background:#111;
+  padding:12px 15px;
+  text-align:center;
+  border-top:1px solid #222;
+  font-size:0.85rem;
+  color:var(--muted);
+  margin-top:auto;
+}
+
+.footer-content p{
+  margin:4px 0;
+}
+.footer-content strong {
+  color:var(--brand);
+  font-size:1rem;
+}
+
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <img src="logo.png" alt="Logo" class="logo" />
+    <h1>Postgres and Chill</h1>
+  </div>
+  <div class="header-center" id="greeting">Hello, Guest</div>
+  <div class="header-right">
+    <a href="about.html" class="nav-link">About</a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <img src="pnw.png" alt="PNW Logo" />
+  </div>
+</header>
+
+<!-- ======================= FOR YOU ======================= -->
+<section id="recommend-section">
+  <h2>For You</h2>
+  <p class="section-sub">Personalized picks</p>
+  <div class="filters">
+    <input type="text" id="recSearch" placeholder="Search by title..." />
+    <label>Genre:</label>
+    <select id="recGenre" class="pill"></select>
+    <label>Sort:</label>
+    <select id="recSort" class="pill">
+      <option value="title_asc">Title (A-Z)</option>
+      <option value="title_desc">Title (Z-A)</option>
+      <option value="year_asc">Year (Oldest)</option>
+      <option value="year_desc">Year (Newest)</option>
+      <option value="rating_desc">Rating (High-Low)</option>
+      <option value="rating_asc">Rating (Low-High)</option>
+    </select>
+    <label>Show:</label>
+    <input type="number" id="recCount" value="10" min="1" max="200" />
+  </div>
+
+  <div class="carousel-container">
+    <button class="carousel-btn carousel-left" onclick="scrollCarousel(-1,'recommendCarousel')">❮</button>
+    <div id="recommendCarousel" class="carousel">Loading...</div>
+    <button class="carousel-btn carousel-right" onclick="scrollCarousel(1,'recommendCarousel')">❯</button>
+  </div>
+</section>
+
+<!-- ======================= POPULAR ======================= -->
+<section id="popular-section">
+  <h2>Popular Movies</h2>
+  <p class="section-sub">What’s trending</p>
+  <div class="filters">
+    <input type="text" id="popSearch" placeholder="Search by title..." />
+    <label>Genre:</label>
+    <select id="popGenre" class="pill"></select>
+    <label>Sort:</label>
+    <select id="popSort" class="pill">
+      <option value="rating_desc">Rating (High-Low)</option>
+      <option value="rating_asc">Rating (Low-High)</option>
+      <option value="title_asc">Title (A-Z)</option>
+      <option value="title_desc">Title (Z-A)</option>
+      <option value="year_desc">Year (Newest)</option>
+      <option value="year_asc">Year (Oldest)</option>
+    </select>
+    <label>Show:</label>
+    <input type="number" id="popularCount" value="10" min="1" max="200" />
+  </div>
+
+  <div class="carousel-container">
+    <button class="carousel-btn carousel-left" onclick="scrollCarousel(-1,'popularCarousel')">❮</button>
+    <div id="popularCarousel" class="carousel">Loading...</div>
+    <button class="carousel-btn carousel-right" onclick="scrollCarousel(1,'popularCarousel')">❯</button>
+  </div>
+</section>
+
+<!-- ======================= ALL MOVIES ======================= -->
+<section id="all-section">
+  <h2>All Movies</h2>
+  <div class="filters">
+    <input type="text" id="search" placeholder="Search by title..." />
+    <label>Genre:</label>
+    <select id="genreFilter"></select>
+    <label>Sort:</label>
+    <select id="sortFilter">
+      <option value="title_asc">Title (A-Z)</option>
+      <option value="title_desc">Title (Z-A)</option>
+      <option value="year_asc">Year (Oldest)</option>
+      <option value="year_desc">Year (Newest)</option>
+      <option value="rating_desc">Rating (High-Low)</option>
+      <option value="rating_asc">Rating (Low-High)</option>
+    </select>
+    <label>Show:</label>
+    <input type="number" id="movieCount" value="12" min="1" max="500" />
+  </div>
+
+  <div class="carousel-container">
+    <button class="carousel-btn carousel-left" onclick="scrollCarousel(-1,'allMoviesCarousel')">❮</button>
+    <div id="allMoviesCarousel" class="carousel">Loading...</div>
+    <button class="carousel-btn carousel-right" onclick="scrollCarousel(1,'allMoviesCarousel')">❯</button>
+  </div>
+</section>
+
+<!-- ======================= YOUR RATINGS ======================= -->
+<section id="your-ratings-section">
+  <div style="display:flex;align-items:baseline;gap:8px;">
+    <h2>Your Ratings</h2>
+    <span id="ratingsCountLabel" class="section-sub"></span>
+  </div>
+  <div class="filters">
+    <input type="text" id="yrSearch" placeholder="Search in your ratings..." />
+    <label>Genre:</label>
+    <select id="yrGenre" class="pill"></select>
+    <label>Sort:</label>
+    <select id="yrSort">
+      <option value="timestamp_desc">Most recent</option>
+      <option value="timestamp_asc">Oldest first</option>
+      <option value="your_desc">Your rating (High-Low)</option>
+      <option value="your_asc">Your rating (Low-High)</option>
+      <option value="title_asc">Title (A-Z)</option>
+      <option value="title_desc">Title (Z-A)</option>
+    </select>
+    <label>Show:</label>
+    <input type="number" id="yrShow" value="12" min="1" max="500" />
+  </div>
+
+  <div class="carousel-container">
+    <button class="carousel-btn carousel-left" onclick="scrollCarousel(-1,'yourRatingsCarousel')">❮</button>
+    <div id="yourRatingsCarousel" class="carousel">Loading...</div>
+    <button class="carousel-btn carousel-right" onclick="scrollCarousel(1,'yourRatingsCarousel')">❯</button>
+  </div>
+</section>
+
+<div id="popup"></div>
+<div id="toast">⭐ Rating saved!</div>
+
+<script>
+/* ======================= CONFIG ======================= */
+const apiBase = "http://localhost:8080/api";
+const userId = Number(localStorage.getItem("pc_userId"));
+const username = localStorage.getItem("pc_userName") || "Guest";
+document.getElementById("greeting").textContent = `Hello, ${username}`;
+if (!userId) window.location.href = "login.html";
+
+let allMoviesRaw = [];
+let allMovies = [];
+let userRatings = [];  // { movieId, rating, timestamp }
+let genresList = [];
+let recommendedMovies = []; // from backend /recommendations
+
+let cardsPerRow = 4;   // computed from viewport
+
+/* ======================= UTIL ======================= */
+function logout(){
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+function toMovie(row){
+  const id = row[0], title = row[1], year = row[2];
+  const rating = Number(row[3] || 0);
+  const ratingCount = Number(row[4] || 0);
+  const genres = typeof row[5] === "string" && row[5].length
+    ? row[5].split(",")
+    : [];
+  const weighted = Number(row[6] || 0);  // matches index.html
+  return { id, title, year, rating, ratingCount, genres, weighted };
+}
+
+function scrollCarousel(dir,id){
+  const track = document.getElementById(id);
+  const firstPage = track ? track.firstElementChild : null;
+  if (!firstPage) return;
+  const pageWidth = firstPage.offsetWidth;
+  track.scrollBy({ left: dir * pageWidth, behavior: "smooth" });
+}
+
+function getCardsPerRow(){
+  const cardWidth = 160;
+  const gap = 18;
+  const horizontalPadding = 80;
+  const usable = Math.max(320, window.innerWidth - horizontalPadding);
+  const perRow = Math.max(1, Math.floor((usable + gap) / (cardWidth + gap)));
+  cardsPerRow = perRow;
+  return perRow;
+}
+
+function groupMoviesByViewport(list){
+  const perRow = cardsPerRow || getCardsPerRow();
+  const pages = [];
+  for (let i = 0; i < list.length; i += perRow){
+    pages.push(list.slice(i, i + perRow));
+  }
+  return pages;
+}
+
+function showToast(msg="⭐ Rating saved!"){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1200);
+}
+
+function getUserRatingLocal(movieId){
+  const entry = userRatings.find(r => r.movieId === movieId);
+  return entry ? Number(entry.rating || 0) : 0;
+}
+
+/* ======================= CLAMP SHOW INPUTS ======================= */
+function clampShowInputs(){
+  const perRow = getCardsPerRow();
+
+  ["recCount","popularCount","movieCount"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.min = perRow;
+    let val = Number(el.value) || perRow;
+    if (val < perRow) val = perRow;
+    el.value = val;
+  });
+
+  const yrShow = document.getElementById("yrShow");
+  if (yrShow){
+    let v = Number(yrShow.value) || perRow;
+    if (v < perRow) v = perRow;
+    yrShow.value = v;
+  }
+}
+
+/* ======================= LOAD GENRES ======================= */
+async function loadGenres(){
+  const res = await fetch(`${apiBase}/genres`);
+  const data = await res.json();
+  genresList = data.map(g=>g.name);
+
+  const genreFilter = document.getElementById("genreFilter");
+  const recGenre = document.getElementById("recGenre");
+  const popGenre = document.getElementById("popGenre");
+  const yrGenre = document.getElementById("yrGenre");
+
+  genreFilter.innerHTML = '<option value="">All</option>';
+  recGenre.innerHTML = '<option value="">All</option>';
+  popGenre.innerHTML = '<option value="">All</option>';
+  yrGenre.innerHTML = '<option value="">All</option>';
+
+  genresList.forEach(name=>{
+    const opt = `<option value="${name}">${name}</option>`;
+    genreFilter.innerHTML += opt;
+    recGenre.innerHTML += opt;
+    popGenre.innerHTML += opt;
+    yrGenre.innerHTML += opt;
+  });
+}
+
+/* ======================= LOAD MOVIES ======================= */
+async function loadMovies(){
+  const res = await fetch(`${apiBase}/movies`);
+  allMoviesRaw = await res.json();
+  allMovies = allMoviesRaw.map(toMovie);
+
+  renderRecommend();
+  renderPopular();
+  renderAll();
+  renderYourRatings();
+}
+
+/* ======================= LOAD USER RATINGS ======================= */
+async function loadUserRatings(){
+  try{
+    const res = await fetch(`${apiBase}/ratings/user/${userId}`);
+    const data = await res.json();
+    userRatings = data.map(r => ({
+      movieId: r.id.movieId,
+      rating: Number(r.rating || 0),
+      timestamp: r.timestamp || 0
+    }));
+  }catch(e){
+    userRatings = [];
+  }
+  renderYourRatings();
+  // also refresh other sections inline stars
+  renderRecommend();
+  renderPopular();
+  renderAll();
+}
+
+/* ======================= LOAD RECOMMENDATIONS ======================= */
+async function loadRecommendations() {
+  try {
+    const res = await fetch(`${apiBase}/recommendations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+        limit: 50
+      })
+    });
+
+    const data = await res.json();
+
+    // Create a lookup map from allMovies
+    const movieMap = new Map(allMovies.map(m => [m.id, m]));
+
+    recommendedMovies = data.map(rec => {
+      const base = movieMap.get(rec.movieId);
+
+      return {
+        id: rec.movieId,
+        title: rec.title,
+        year: rec.releaseYear,
+        genres: rec.genres || [],
+        reasons: rec.reasons || [],
+
+        // ⭐ REAL RATING FIELDS (from /movies)
+        rating: base?.rating ?? 0,
+        ratingCount: base?.ratingCount ?? 0,
+        weighted: base?.weighted ?? 0,
+
+        // Optional: rec.score from backend (unused for visual)
+        score: rec.score ?? 0
+      };
+    });
+  } catch (err) {
+    console.error("Failed to load recommendations:", err);
+    recommendedMovies = [];
+  }
+}
+
+
+/* ======================= CREATE MOVIE CARD ======================= */
+/**
+ * sectionId is used only to decide which image to show:
+ * "recommend" => popular.png
+ * "popular"   => popular.png
+ * "all"       => movie.png
+ * "your"      => movie.png
+ */
+function createCard(m, sectionId){
+  const imgSrc = (sectionId === "recommend" || sectionId === "popular")
+    ? "popular.png"
+    : "movie.png";
+
+  const card = document.createElement("div");
+  card.className = "movie-card";
+
+  const weightedDisplay = m.weighted && !isNaN(m.weighted)
+    ? `⭐ ${m.weighted.toFixed(2)} (W)`
+    : (m.rating ? `⭐ ${m.rating.toFixed(1)}` : "⭐ N/A");
+
+  const avgLine = (m.ratingCount && !isNaN(m.rating))
+    ? `Avg: ${m.rating.toFixed(1)} | Votes: ${m.ratingCount}`
+    : (m.rating && !isNaN(m.rating))
+      ? `Avg: ${m.rating.toFixed(1)}`
+      : "Avg: N/A";
+
+  const userRating = getUserRatingLocal(m.id);
+  const fullStars = userRating;
+  const emptyStars = 5 - userRating;
+
+  card.innerHTML = `
+    <img src="${imgSrc}" alt="${m.title}">
+    <h3>${m.title}</h3>
+    <p>${m.year ?? ""}</p>
+    <p>${weightedDisplay}</p>
+    <p>${avgLine}</p>
+    <div class="inline-stars" data-movie-id="${m.id}">
+      ${[1,2,3,4,5].map(i =>
+        `<span data-star="${i}" class="${i <= fullStars ? 'active' : ''}">★</span>`
+      ).join("")}
+    </div>
+  `;
+
+  // Clicking on card (but NOT stars) → popup
+  card.addEventListener("click", (evt) => {
+    const target = evt.target;
+    if (target.closest(".inline-stars")) {
+      // click handled by star logic
+      return;
+    }
+    openPopup(m);
+  });
+
+  // setup inline stars behavior
+  setupInlineStars(card, m);
+
+  return card;
+}
+
+function setupInlineStars(card, movie){
+  const starsContainer = card.querySelector(".inline-stars");
+  if (!starsContainer) return;
+
+  const stars = Array.from(starsContainer.querySelectorAll("span"));
+
+  function applyStarVisual(rating){
+    stars.forEach(s=>{
+      const val = Number(s.dataset.star);
+      s.classList.toggle("active", val <= rating);
+    });
+  }
+
+  const current = getUserRatingLocal(movie.id);
+  applyStarVisual(current);
+
+  stars.forEach(star=>{
+    star.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      const newRating = Number(star.dataset.star);
+      applyStarVisual(newRating);
+      await saveRating(movie.id,newRating);
+      showToast();
+    });
+
+    star.addEventListener("mouseenter",(e)=>{
+      e.stopPropagation();
+      const hoverVal = Number(star.dataset.star);
+      applyStarVisual(hoverVal);
+    });
+
+    starsContainer.addEventListener("mouseleave",()=>{
+      const cur = getUserRatingLocal(movie.id);
+      applyStarVisual(cur);
+    });
+  });
+}
+
+/* ======================= RENDER RECOMMEND ======================= */
+function renderRecommend(){
+  const el = document.getElementById("recommendCarousel");
+  if (!el) return;
+
+  const q = (document.getElementById("recSearch").value||"").toLowerCase();
+  const g = document.getElementById("recGenre").value;
+  const sort = document.getElementById("recSort").value;
+  const perRow = cardsPerRow || getCardsPerRow();
+  let n = Number(document.getElementById("recCount").value)||perRow;
+  if (n < perRow){ n = perRow; document.getElementById("recCount").value = n; }
+
+  let list = [...recommendedMovies].filter(m =>
+    (!q || m.title.toLowerCase().includes(q)) &&
+    (!g || m.genres.includes(g))
+  );
+
+  list.sort((a,b)=>{
+    switch(sort){
+      case "title_asc": return a.title.localeCompare(b.title);
+      case "title_desc": return b.title.localeCompare(a.title);
+      case "year_asc": return (a.year||0)-(b.year||0);
+      case "year_desc": return (b.year||0)-(a.year||0);
+      case "rating_asc": return (a.weighted||a.rating||0)-(b.weighted||b.rating||0);
+      case "rating_desc": return (b.weighted||b.rating||0)-(a.weighted||a.rating||0);
+    }
+    return 0;
+  });
+
+  const limited = list.slice(0,n);
+  const pages = groupMoviesByViewport(limited);
+
+  el.innerHTML = "";
+  if (!pages.length){
+    el.innerHTML = `<div class="carousel-page"><p style="color:var(--muted);">No recommendations yet.</p></div>`;
+    return;
+  }
+
+  pages.forEach(pg=>{
+    const page = document.createElement("div");
+    page.className = "carousel-page";
+    pg.forEach(m => page.appendChild(createCard(m,"recommend")));
+    el.appendChild(page);
+  });
+}
+
+/* ======================= RENDER POPULAR ======================= */
+function renderPopular(){
+  const el = document.getElementById("popularCarousel");
+  if (!el) return;
+
+  const q = (document.getElementById("popSearch").value||"").toLowerCase();
+  const g = document.getElementById("popGenre").value;
+  const sort = document.getElementById("popSort").value;
+  const perRow = cardsPerRow || getCardsPerRow();
+  let n = Number(document.getElementById("popularCount").value)||perRow;
+  if (n < perRow){ n = perRow; document.getElementById("popularCount").value = n; }
+
+  let list = [...allMovies].filter(m =>
+    (!q || m.title.toLowerCase().includes(q)) &&
+    (!g || m.genres.includes(g))
+  );
+
+  list.sort((a,b)=>{
+    switch(sort){
+      case "rating_desc":
+        return (b.weighted||b.rating||0) - (a.weighted||a.rating||0) ||
+               b.ratingCount - a.ratingCount;
+      case "rating_asc":
+        return (a.weighted||a.rating||0) - (b.weighted||b.rating||0) ||
+               a.ratingCount - b.ratingCount;
+      case "title_asc": return a.title.localeCompare(b.title);
+      case "title_desc": return b.title.localeCompare(a.title);
+      case "year_desc": return (b.year||0)-(a.year||0);
+      case "year_asc": return (a.year||0)-(b.year||0);
+    }
+    return 0;
+  });
+
+  const limited = list.slice(0,n);
+  const pages = groupMoviesByViewport(limited);
+
+  el.innerHTML = "";
+  if (!pages.length){
+    el.innerHTML = `<div class="carousel-page"><p style="color:var(--muted);">No movies.</p></div>`;
+    return;
+  }
+
+  pages.forEach(pg=>{
+    const page = document.createElement("div");
+    page.className = "carousel-page";
+    pg.forEach(m => page.appendChild(createCard(m,"popular")));
+    el.appendChild(page);
+  });
+}
+
+/* ======================= RENDER ALL MOVIES ======================= */
+function renderAll(){
+  const el = document.getElementById("allMoviesCarousel");
+  if (!el) return;
+
+  const q = (document.getElementById("search").value||"").toLowerCase();
+  const g = document.getElementById("genreFilter").value;
+  const sort = document.getElementById("sortFilter").value;
+  const perRow = cardsPerRow || getCardsPerRow();
+  let n = Number(document.getElementById("movieCount").value)||perRow;
+  if (n < perRow){ n = perRow; document.getElementById("movieCount").value = n; }
+
+  let list = [...allMovies].filter(m =>
+    (!q || m.title.toLowerCase().includes(q)) &&
+    (!g || m.genres.includes(g))
+  );
+
+  list.sort((a,b)=>{
+    switch(sort){
+      case "title_asc": return a.title.localeCompare(b.title);
+      case "title_desc": return b.title.localeCompare(a.title);
+      case "year_asc": return (a.year||0)-(b.year||0);
+      case "year_desc": return (b.year||0)-(a.year||0);
+      case "rating_asc": return (a.weighted||a.rating||0)-(b.weighted||b.rating||0);
+      case "rating_desc": return (b.weighted||b.rating||0)-(a.weighted||a.rating||0);
+    }
+    return 0;
+  });
+
+  const limited = list.slice(0,n);
+  const pages = groupMoviesByViewport(limited);
+
+  el.innerHTML = "";
+  if (!pages.length){
+    el.innerHTML = `<div class="carousel-page"><p style="color:var(--muted);">No movies.</p></div>`;
+    return;
+  }
+
+  pages.forEach(pg=>{
+    const page = document.createElement("div");
+    page.className = "carousel-page";
+    pg.forEach(m => page.appendChild(createCard(m,"all")));
+    el.appendChild(page);
+  });
+}
+
+/* ======================= RENDER YOUR RATINGS ======================= */
+function renderYourRatings(){
+  const label = document.getElementById("ratingsCountLabel");
+  const total = userRatings.length || 0;
+
+  if (label) {
+    label.textContent = total
+      ? `You have ${total} rating${total === 1 ? "" : "s"}.`
+      : "No ratings yet.";
+  }
+
+  const carousel = document.getElementById("yourRatingsCarousel");
+  if (!carousel) return;
+
+  if (!total) {
+    carousel.innerHTML =
+      `<div class="carousel-page">
+         <p style="padding:10px;color:var(--muted);">
+           No ratings yet. Click a movie card above to rate it!
+         </p>
+       </div>`;
+    return;
+  }
+
+  const q = (document.getElementById("yrSearch").value || "").toLowerCase();
+  const g = document.getElementById("yrGenre").value;
+  const sort = document.getElementById("yrSort").value;
+
+  let show = Number(document.getElementById("yrShow").value) || cardsPerRow;
+  if (show < cardsPerRow) {
+    show = cardsPerRow;
+    document.getElementById("yrShow").value = show;
+  }
+
+  const movieMap = new Map(allMovies.map(m => [m.id, m]));
+
+  let list = userRatings
+    .map(r => ({ ...r, movie: movieMap.get(r.movieId) }))
+    .filter(x => x.movie);
+
+  list = list.filter(x =>
+    (!q || x.movie.title.toLowerCase().includes(q)) &&
+    (!g || x.movie.genres.includes(g))
+  );
+
+  list.sort((a, b) => {
+    switch (sort) {
+      case "timestamp_desc": return (b.timestamp || 0) - (a.timestamp || 0);
+      case "timestamp_asc": return (a.timestamp || 0) - (b.timestamp || 0);
+      case "your_desc": return b.rating - a.rating;
+      case "your_asc": return a.rating - b.rating;
+      case "title_asc": return a.movie.title.localeCompare(b.movie.title);
+      case "title_desc": return b.movie.title.localeCompare(a.movie.title);
+    }
+    return 0;
+  });
+
+  const limited = list.slice(0, show);
+  const pages = groupMoviesByViewport(limited);
+  carousel.innerHTML = "";
+
+  pages.forEach(pg => {
+    const page = document.createElement("div");
+    page.className = "carousel-page";
+
+    pg.forEach(rec => {
+      const m = rec.movie;
+      // Reuse createCard so styling is consistent, but we want
+      // the inline stars to reflect this rating too:
+      const cardMovie = {
+        ...m,
+        id: m.id  // ensure correct id
+      };
+      const card = createCard(cardMovie,"your");
+      page.appendChild(card);
+    });
+
+    carousel.appendChild(page);
+  });
+}
+
+/* ======================= POPUP ======================= */
+async function openPopup(movie){
+  const popup = document.getElementById("popup");
+  popup.style.display = "flex";
+
+  const cur = await fetchUserRating(movie.id);
+
+  const weightedLine = (movie.weighted && !isNaN(movie.weighted))
+    ? `⭐ ${movie.weighted.toFixed(2)} (W)`
+    : "⭐ N/A";
+
+  const avgLine = (movie.ratingCount && !isNaN(movie.rating))
+    ? `${movie.rating.toFixed(1)} (${movie.ratingCount})`
+    : (movie.rating && !isNaN(movie.rating))
+      ? `${movie.rating.toFixed(1)}`
+      : "N/A";
+
+  popup.innerHTML = `
+    <div class="popup-content" onclick="event.stopPropagation()">
+      <h2>${movie.title}</h2>
+
+      <div class="popup-row">
+        <strong>Year:</strong> ${movie.year||"N/A"}
+      </div>
+      <div class="popup-row">
+        <strong>Genres:</strong> ${movie.genres && movie.genres.length ? movie.genres.join(", ") : "N/A"}
+      </div>
+
+      <hr style="border:0;border-top:1px solid #333;margin:10px 0;">
+
+      <div class="popup-row">
+        <strong>Weighted Rating:</strong> ${weightedLine}
+      </div>
+      <div class="popup-row">
+        <strong>Average Rating:</strong> ${avgLine}
+      </div>
+
+      <div class="popup-row">
+        ${(movie.reasons && movie.reasons.length) ? `
+        <div class="popup-row">
+          <strong>Why recommended:</strong>
+          <ul style="padding-left:18px;margin:6px 0;color:#ccc;">
+            ${movie.reasons.map(r => `<li>${r}</li>`).join("")}
+          </ul>
+        </div>
+      ` : ""}
+
+      </div>
+
+      <div class="popup-row"><strong>Your Rating:</strong></div>
+      <div class="stars" id="stars">
+        ${[1,2,3,4,5].map(i=>`
+          <span data-star="${i}" class="${i<=cur?'active':''}">★</span>
+        `).join('')}
+      </div>
+      <div class="popup-actions">
+        <button class="close-btn">Close</button>
+        <button class="clear-btn">Clear Rating</button>
+      </div>
+    </div>
+  `;
+
+  // STAR BEHAVIOR
+  document.querySelectorAll("#stars span").forEach(st=>{
+    st.addEventListener("click",async()=>{
+      const val = Number(st.dataset.star);
+      document.querySelectorAll("#stars span").forEach(s =>
+        s.classList.toggle("active", Number(s.dataset.star)<=val)
+      );
+      await saveRating(movie.id,val);
+      showToast();
+    });
+  });
+
+  popup.querySelector(".close-btn").onclick = () => closePopup();
+  popup.querySelector(".clear-btn").onclick = async()=>{
+    await clearRating(movie.id);
+    showToast("🧹 Rating cleared");
+  };
+
+  popup.onclick = e=>{ if(e.target.id==="popup") closePopup(); };
+}
+
+function closePopup(){ document.getElementById("popup").style.display="none"; }
+
+/* ======================= RATING API ======================= */
+async function fetchUserRating(movieId){
+  try{
+    const r = await fetch(`${apiBase}/ratings/${userId}/${movieId}`);
+    if(!r.ok) return 0;
+    const d = await r.json();
+    return Number(d.rating||0);
+  }catch{
+    return 0;
+  }
+}
+
+async function saveRating(movieId,r){
+  const payload = {
+    id:{userId:Number(userId),movieId:Number(movieId)},
+    rating:Number(r)
+  };
+  await fetch(`${apiBase}/ratings`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload)
+  });
+  await loadMovies();
+  await loadUserRatings();
+}
+
+async function clearRating(movieId){
+  await fetch(`${apiBase}/ratings/${userId}/${movieId}`,{method:"DELETE"});
+  await loadMovies();
+  await loadUserRatings();
+}
+
+/* ======================= EVENTS ======================= */
+// For You
+document.getElementById("recSearch").oninput = renderRecommend;
+document.getElementById("recGenre").onchange = renderRecommend;
+document.getElementById("recSort").onchange = renderRecommend;
+document.getElementById("recCount").onchange = renderRecommend;
+
+// Popular
+document.getElementById("popSearch").oninput = renderPopular;
+document.getElementById("popGenre").onchange = renderPopular;
+document.getElementById("popSort").onchange = renderPopular;
+document.getElementById("popularCount").onchange = renderPopular;
+
+// All Movies
+document.getElementById("search").oninput = renderAll;
+document.getElementById("genreFilter").onchange = renderAll;
+document.getElementById("sortFilter").onchange = renderAll;
+document.getElementById("movieCount").onchange = renderAll;
+
+// Your Ratings
+document.getElementById("yrSearch").oninput = renderYourRatings;
+document.getElementById("yrGenre").onchange = renderYourRatings;
+document.getElementById("yrSort").onchange = renderYourRatings;
+document.getElementById("yrShow").onchange = renderYourRatings;
+
+// Popup backdrop
+document.getElementById("popup").onclick = e=>{
+  if(e.target.id==="popup") closePopup();
+};
+
+// Recompute pages on resize
+window.addEventListener("resize", ()=>{
+  clampShowInputs();
+  renderRecommend();
+  renderPopular();
+  renderAll();
+  renderYourRatings();
+});
+
+/* ======================= BOOT ======================= */
+(async function boot(){
+  clampShowInputs();
+  await loadGenres();
+  await loadMovies();
+  await loadUserRatings();
+  await loadRecommendations();
+  clampShowInputs();
+  renderRecommend();
+  renderPopular();
+  renderAll();
+  renderYourRatings();
+})();
+</script>
+<footer>
+  <div class="footer-content">
+    <p><strong>Postgres & Chill</strong>: Smarter Movie Recommendations</p>
+    <p>CS 51550-001 Database Systems @ PNW — Fall 2025 | Panagiotis Papadopoulos </p>
+  </div>
+</footer>
+
+
+
+
+<script src="js/health-check.js"></script>
+
+
+</body>
+</html>
