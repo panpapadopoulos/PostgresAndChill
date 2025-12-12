@@ -1,0 +1,23 @@
+# --- Build artifacts ---
+# Maven target directory
+target/
+# Spring Boot/Maven generated JAR files
+*.jar
+*.war
+
+# --- IDE and OS files ---
+# Ignore macOS and Windows specific files
+.DS_Store
+Thumbs.db
+
+# Ignore common IDE directories (IntelliJ, VS Code)
+.idea/
+.vscode/
+
+# --- Environment/Configuration (Crucial for security) ---
+# You might want to ignore specific environment files, e.g.,
+# .env
+# **You should review your application.properties for any secrets!**
+
+# --- Log files ---
+*.log

@@ -110,7 +110,13 @@ main{
   box-shadow:var(--shadow);
 }
 
-/* Section titles */
+.section-image{
+  width:100%;
+  border-radius:12px;
+  margin:20px 0;
+  box-shadow:var(--shadow);
+}
+
 h2{
   font-size:1.4rem;
   font-weight:700;
@@ -131,7 +137,6 @@ h3{
   margin-top:28px;
 }
 
-/* Text */
 p, ul{
   font-size:1rem;
   line-height:1.6;
@@ -139,7 +144,6 @@ p, ul{
 }
 ul{ padding-left:22px; }
 
-/* Project Title Centerpiece */
 .project-name{
   text-align:center;
   font-size:1.6rem;
@@ -148,7 +152,7 @@ ul{ padding-left:22px; }
   font-weight:700;
 }
 
-/* Developer Card (matching dashboard cards) */
+/* Developer Card */
 .developer-info{
   display:flex;
   gap:24px;
@@ -166,11 +170,17 @@ ul{ padding-left:22px; }
   border-radius:50%;
   border:2px solid var(--brand);
 }
-.developer-details{
-  flex:1;
-}
-.developer-details h2{
-  margin-top:0;
+.developer-details{ flex:1; }
+.developer-details h2{ margin-top:0; }
+
+/* Highlight Boxes */
+.highlight-box{
+  background:var(--panel2);
+  padding:20px;
+  border-left:4px solid var(--brand);
+  border-radius:10px;
+  margin:20px 0;
+  box-shadow:var(--shadow);
 }
 
 /* ========================================= */
@@ -191,9 +201,7 @@ footer a{
   color:var(--brand);
   text-decoration:none;
 }
-footer a:hover{
-  text-decoration:underline;
-}
+footer a:hover{ text-decoration:underline; }
 </style>
 </head>
 
@@ -215,71 +223,117 @@ footer a:hover{
   </div>
 </header>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <main>
-  <div class="project-name">Postgres & Chill: Smarter Movie Recommendations</div>
 
+  <!-- Title -->
+  <div class="project-name">Postgres & Chill — Smarter Movie Recommendations</div>
+
+  <!-- Developer Block -->
   <div class="developer-info">
     <img src="profile.png" alt="Developer Photo">
     <div class="developer-details">
       <h2>Panagiotis Papadopoulos</h2>
       <p>Graduate Student | M.S. Computer Science</p>
       <p>Purdue University Northwest</p>
-      <p><strong>Student ID:</strong> 039644940</p>
       <p><strong>Email:</strong> papadop@pnw.edu</p>
     </div>
   </div>
 
-  <h2>Problem Statement</h2>
+  <!-- Visual Banner -->
+
+  <h2>What is Postgres & Chill?</h2>
   <p>
-    Choosing a movie shouldn't be the hardest part of relaxing — yet streaming services only
-    show what they personally own. <strong>Postgres & Chill</strong> breaks that limitation
-    by aggregating movie data from a large dataset and intelligently recommending films
-    based on unbiased ranking algorithms.
+    <strong>Postgres & Chill</strong> is a full-stack, fully Dockerized movie recommendation platform
+    powered by PostgreSQL, Spring Boot, and the MovieLens dataset.  
+    The goal: deliver personalized, data-driven movie suggestions using collaborative filtering.
+  </p>
+   <a href="https://github.com/panpapadopoulos/PostgresAndChill" class="nav-link">Visit: https://github.com/panpapadopoulos/PostgresAndChill</a>
+  
+
+  <div class="highlight-box">
+    🎯 <strong>Built for CS 51550 Database Systems (PNW, Fall 2025)</strong>
+  </div>
+
+  <h2>Why This Project?</h2>
+  <p>
+    Most streaming platforms recommend only what they own.  
+    But real discovery requires a broader, unbiased movie catalog.  
+    This system uses a **real dataset**, **statistical ranking**, and **user behavior** to recommend movies beyond a single platform.
   </p>
 
-  <h2>Proposed Solution</h2>
+  <h2>Deployment (Docker)</h2>
   <p>
-    The platform imports, cleans, and stores movie and rating data inside PostgreSQL,
-    provides a REST API through Spring Boot, and calculates recommendations using
-    weighted rating formulas and user preferences. New users go through a
-    <strong>cold start</strong> rating process to personalize results quickly.
-  </p>
-
-  <h2>Implementation Overview</h2>
-  <p>
-    The system uses a full-stack approach:
+    The entire system runs via <strong>Docker Compose</strong>:
   </p>
   <ul>
-    <li>Java Spring Boot backend with REST endpoints</li>
-    <li>PostgreSQL database for all movie, rating, and user data</li>
-    <li>HTML/CSS/JavaScript frontend with dynamic rendering</li>
-    <li>Docker for easy deployment and consistent environment setup</li>
+    <li>PostgreSQL container (auto-loads MovieLens data)</li>
+    <li>Spring Boot backend container</li>
+    <li>Static frontend served locally</li>
   </ul>
 
-  <h2>Technology Stack</h2>
+  <div class="highlight-box">
+    ▶ Run the system with:  
+    <strong>start.bat</strong>  
+    ⏹ Stop with: <strong>stop.bat</strong>  
+    🔄 Reset DB: <strong>cleanStart.bat</strong>
+    📋 View Logs: <strong>console.bat</strong>
+  </div>
+
+  <!-- System Architecture Visual -->
+  <h2>System Architecture</h2>
+  <img src="assets/system.png" class="section-image" alt="System Architecture Diagram">
+  <p>
+    The architecture consists of three layers working together under Docker:
+  </p>
   <ul>
-    <li><strong>Backend:</strong> Java (Spring Boot), PostgreSQL</li>
-    <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
-    <li><strong>DevOps:</strong> Docker, Docker Compose</li>
+    <li><strong>Frontend:</strong> HTML/CSS/JS with Fetch API</li>
+    <li><strong>Backend:</strong> Spring Boot REST services</li>
+    <li><strong>Database:</strong> PostgreSQL + MovieLens data</li>
   </ul>
 
-  <h2>Expected Outcomes</h2>
+  <!-- Schema Visual -->
+  <h2>Database Schema</h2>
+  <img src="assets/schema.png" class="section-image" alt="ER Diagram">
+  <p>
+    The relational schema includes:
+  </p>
   <ul>
-    <li>Full PostgreSQL movie dataset with relationships and indexing</li>
-    <li>API for movies, genres, ratings, and recommendation logic</li>
-    <li>Interactive dashboard with carousels and rating UI</li>
-    <li>Cold-start onboarding for new users</li>
-    <li>Future-ready architecture for neural recommendation models</li>
+    <li>Users</li>
+    <li>Movies</li>
+    <li>Ratings (user ↔ movie)</li>
+    <li>Genres</li>
+    <li>Movie–genre bridge table</li>
   </ul>
+
+  <h2>How Recommendations Work</h2>
+  <div class="highlight-box">
+    🧠 <strong>Collaborative Filtering + Weighted Correlation</strong>
+  </div>
+  <ul>
+    <li>Build rating vector for each user</li>
+    <li>Compare unrated movies to rated ones</li>
+    <li>Similarity is calculated using weighted correlation</li>
+    <li>Movies above user's average = likely liked</li>
+    <li>Movies below user's average = likely disliked</li>
+  </ul>
+
+  <h2>Project Outcomes</h2>
+  <ul>
+    <li>Fully functional movie recommendation system</li>
+    <li>Personalized ranking using real data</li>
+    <li>Dockerized for effortless deployment</li>
+    <li>Scalable architecture</li>
+  </ul>
+
+  
 </main>
 
 <footer>
   <div class="footer-content">
-    <p><strong>Postgres & Chill</strong>: Smarter Movie Recommendations</p>
-    <p>CS 51550-001 Database Systems @ PNW — Fall 2025 | Panagiotis Papadopoulos</p>
+    <p><strong>Postgres & Chill</strong> — Smarter Movie Recommendations</p>
+    <p>CS 51550 • Database Systems • Purdue University Northwest</p>
   </div>
-  
 </footer>
 
 </body>
