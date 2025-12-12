@@ -1,7 +1,7 @@
-\echo '🚀 Importing data from /data ...'
+\echo ' Importing data from /data ...'
 
 -- ======================================
--- 1️⃣ Import movies & genres
+-- 1 Import movies & genres
 -- ======================================
 -- Load movies
 CREATE TEMP TABLE tmp_movies (
@@ -46,7 +46,7 @@ DROP TABLE tmp_movies;
 
 
 -- ======================================
--- 2️⃣ Create users dynamically from ratings.csv
+-- 2️ Create users dynamically from ratings.csv
 -- ======================================
 CREATE TEMP TABLE tmp_ratings (
     user_id INT,
@@ -73,7 +73,7 @@ FROM tmp_ratings;
 DROP TABLE tmp_ratings;
 
 -- ======================================
--- 3️⃣ Load tags
+-- 3 Load tags
 -- ======================================
 CREATE TEMP TABLE tmp_tags (
     user_id INT,
@@ -98,4 +98,4 @@ FROM tmp_tags;
 
 DROP TABLE tmp_tags;
 
-\echo '✅ Data import complete!'
+\echo 'Data import complete!'

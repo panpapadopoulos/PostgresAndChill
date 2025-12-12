@@ -20,7 +20,7 @@ public class RatingController {
         this.ratingRepository = ratingRepository;
     }
 
-    // ⭐ Get specific rating
+    //  Get specific rating
     @GetMapping("/{userId}/{movieId}")
     public Optional<Rating> getRating(
             @PathVariable Integer userId,
@@ -30,13 +30,13 @@ public class RatingController {
         return ratingRepository.findById(id);
     }
 
-    // ⭐ Get all ratings for a user
+    //  Get all ratings for a user
     @GetMapping("/user/{userId}")
     public List<Rating> getRatingsForUser(@PathVariable Integer userId) {
         return ratingRepository.findByUserId(userId);
     }
 
-    // ⭐ Clear rating
+    //  Clear rating
     @DeleteMapping("/{userId}/{movieId}")
     public void deleteRating(
             @PathVariable Integer userId,
@@ -46,7 +46,7 @@ public class RatingController {
         ratingRepository.deleteById(id);
     }
 
-    // ⭐ Save or update rating — matches payload used by dashboard
+    //  Save or update rating — matches payload used by dashboard
     //
     // Expected JSON:
     // {

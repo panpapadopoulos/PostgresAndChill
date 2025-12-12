@@ -15,7 +15,7 @@ public class Genre {
     private String name;
 
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
-    @JsonManagedReference  // 🧠 pairs with @JsonBackReference
+    @JsonManagedReference  //  pairs with @JsonBackReference
     private Set<Movie> movies;
 
     public Integer getGenreId() { return genreId; }

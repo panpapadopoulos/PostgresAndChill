@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class User {
 
     @Id
-    private Integer userId; // ✅ remove @GeneratedValue to avoid conflicts
+    private Integer userId; // remove @GeneratedValue to avoid conflicts
 
     @Column(unique = true, nullable = false)
     private String username;
