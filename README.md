@@ -107,14 +107,14 @@ Zero manual setup. One click → app runs.
 # 🏛 System Architecture
 
 <p align="center">
-  <img src="assets/system.png" width="750"/>
+  <img src="assets/system.png" width="700"/>
 </p>
 
 ---
 
 # 🗄️ Database Schema
 <p align="center">
-  <img src="assets/schema.png" width="750"/>
+  <img src="assets/schema.png" width="700"/>
 <p>
 
 # 🧮 Recommendation Engine (How It Works)
@@ -179,7 +179,7 @@ This repository includes:
 ## 📘 Presentation Video
 <p align="center">
   <a href="https://drive.google.com/file/d/1uzaf4vCgtJArSsP0MM4foU_iYkwjD2Ts/view?usp=drive_link">
-    <img src="assets/presentation-thumbnail.png" width="650" alt="Presentation Video Thumbnail">
+    <img src="assets/presentation-thumbnail.png" width="700" alt="Presentation Video Thumbnail">
   </a>
 </p>
 
@@ -189,7 +189,7 @@ This repository includes:
 ## 🛠️ Demo Video
 <p align="center">
   <a href="https://drive.google.com/file/d/1MAuR2AKhWPFniS_8Qqj5WAItxcWokkKk/view?usp=sharing">
-    <img src="assets/demo-thumbnail.png" width="650" alt="Demo Video Thumbnail">
+    <img src="assets/demo-thumbnail.png" width="700" alt="Demo Video Thumbnail">
   </a>
 </p>
 
